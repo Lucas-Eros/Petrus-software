@@ -1,71 +1,67 @@
-"use client";
-
-import React, { ReactElement, useState } from 'react';
+import React, { useState } from 'react';
 import Image from 'next/image';
 
 interface SidebarItemProps {
-  iconSrc?: string;
+  iconSrc: string;
   label: string;
   isActive?: boolean;
   hasDropdown?: boolean;
+  collapsed?: boolean;
 }
 
 const SidebarItem: React.FC<SidebarItemProps> = ({
   iconSrc,
   label,
   isActive = false,
-  hasDropdown = false
+  hasDropdown = false,
+  collapsed = false
 }) => {
   const [isOpen, setIsOpen] = useState(false);
 
+  const toggleDropdown = () => {
+    if (hasDropdown) {
+      setIsOpen(!isOpen);
+    }
+  };
+
   return (
-    <div className="mb-1 px-3">
-      <button
-        className={`flex items-center w-full px-3 py-2 text-sm rounded-md transition-colors ${isActive
-            ? 'bg-green-200 text-green-800 font-medium'
-            : 'text-gray-700 hover:bg-gray-100'
+    <div>
+      <div
+        className={`flex items-center p-4 ${collapsed ? 'justify-center' : 'justify-between'
+          } cursor-pointer ${isActive ? 'bg-blue-50 text-blue-600' : 'text-gray-600 hover:bg-gray-50 hover:text-gray-900'
           }`}
-        onClick={() => hasDropdown && setIsOpen(!isOpen)}
+        onClick={toggleDropdown}
       >
-        {iconSrc ? (
-          <div className="mr-3 relative h-5 w-5">
+        <div className={`flex items-center ${collapsed ? '' : 'gap-6'}`}>
+          <div className='rounded border p-1 border-gray-300'>
+            <div className="relative h-4 w-4 ">
+              <Image
+                src={iconSrc}
+                alt={label}
+                fill
+                className="object-contain"
+              />
+            </div>
+          </div>
+          {!collapsed && <span>{label}</span>}
+        </div>
+
+        {hasDropdown && !collapsed && (
+          <div className="relative h-4 w-4">
             <Image
-              src={iconSrc}
-              alt={label}
+              src="/assets/chevron-down.svg"
+              alt="Expand"
               fill
-              className="object-contain"
-            />
-          </div>
-        ) : (
-          ""
-        )}
-
-        <span className="flex-grow text-left">{label}</span>
-
-        {hasDropdown && (
-          <div className="ml-2 h-4 w-4">
-            <Image
-              src="/assets/down-arrow.svg"
-              alt="dropdown arrow"
-              width={12}
-              height={12}
-              className={`transition-transform ${isOpen ? 'transform rotate-180' : ''}`}
+              className={`object-contain transition-transform ${isOpen ? 'rotate-180' : ''}`}
             />
           </div>
         )}
-      </button>
+      </div>
 
-      {hasDropdown && isOpen && (
-        <div className="ml-10 mt-1 space-y-1">
-          <a href="#" className="block px-3 py-1 text-sm text-gray-600 rounded hover:bg-gray-100">
-            Opção 1
-          </a>
-          <a href="#" className="block px-3 py-1 text-sm text-gray-600 rounded hover:bg-gray-100">
-            Opção 2
-          </a>
-          <a href="#" className="block px-3 py-1 text-sm text-gray-600 rounded hover:bg-gray-100">
-            Opção 3
-          </a>
+      {hasDropdown && isOpen && !collapsed && (
+        <div className="ml-12 border-l border-gray-200 pl-4 py-2">
+          <div className="text-gray-600 hover:text-gray-900 py-2 cursor-pointer">Subitem 1</div>
+          <div className="text-gray-600 hover:text-gray-900 py-2 cursor-pointer">Subitem 2</div>
         </div>
       )}
     </div>
