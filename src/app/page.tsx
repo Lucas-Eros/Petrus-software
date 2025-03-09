@@ -21,7 +21,7 @@ export default function Home() {
         <div className={`flex-1 bg-gray-50 transition-all duration-300`}>
           <Dashboard />
         </div>
-        <div className="w-150 ">
+        <div className="w-110 ">
           <ExchangeMenu />
         </div>
       </div>
