@@ -31,7 +31,7 @@ const ExchangeMenu = () => {
                 </div>
 
 
-                <div className="flex justify-between items-center p-2 rounded-xl gap-1 bg-yellow-300 mt-6">
+                <div className="flex justify-between items-center p-2 rounded-xl gap-1 bg-yellow-300 mt-6 pl-6">
                     <div className="flex justify-between items-center gap-2">
                         <div className="font-medium">0.000620</div>
                     </div>
@@ -56,7 +56,7 @@ const ExchangeMenu = () => {
                     </div>
                 </div>
 
-                <div className="flex justify-between items-center p-2 rounded-xl gap-1 bg-yellow-300 mt-6">
+                <div className="flex justify-between items-center p-2 rounded-xl gap-1 bg-yellow-300 mt-6 pl-6">
                     <div className="flex justify-between items-center gap-2">
                         <div className="font-medium">0.000620</div>
                     </div>
@@ -76,7 +76,7 @@ const ExchangeMenu = () => {
                             Taxa da Network:
                         </div>
                     </div>
-                    <button className="bg-yellow-300 text-black font-medium rounded-lg shadow-yellow-200 p-2 px-4">
+                    <button className="bg-yellow-300 text-black font-medium rounded-lg shadow-yellow-200 p-2 px-4 cursor-pointer">
                         Continuar
                     </button>
                 </div>

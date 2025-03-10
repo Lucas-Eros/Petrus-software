@@ -1,24 +1,31 @@
-import React, { useState } from 'react';
-import Image from 'next/image';
+import React, { useState } from "react";
+import Image from "next/image";
 
 interface SidebarItemProps {
   iconSrc: string;
   label: string;
-  isActive?: boolean;
   hasDropdown?: boolean;
   collapsed?: boolean;
+  isActive: boolean;
+  onClick: () => void;
+  subItems?: { label: string; onClick: () => void }[];
+  isOpen?: boolean; 
 }
 
 const SidebarItem: React.FC<SidebarItemProps> = ({
   iconSrc,
   label,
-  isActive = false,
   hasDropdown = false,
-  collapsed = false
+  collapsed = false,
+  isActive,
+  onClick,
+  subItems = [],
+  isOpen: initialIsOpen = false, 
 }) => {
-  const [isOpen, setIsOpen] = useState(false);
+  const [isOpen, setIsOpen] = useState(initialIsOpen);
 
-  const toggleDropdown = () => {
+  const handleClick = () => {
+    onClick();
     if (hasDropdown) {
       setIsOpen(!isOpen);
     }
@@ -27,32 +34,29 @@ const SidebarItem: React.FC<SidebarItemProps> = ({
   return (
     <div>
       <div
-        className={`flex items-center p-4 ${collapsed ? 'justify-center' : 'justify-between'
-          } cursor-pointer ${isActive ? 'bg-blue-50 text-blue-600' : 'text-gray-600 hover:bg-gray-50 hover:text-gray-900'
-          }`}
-        onClick={toggleDropdown}
+        className={`flex items-center p-4 ${collapsed ? "justify-center" : "justify-between"} 
+          cursor-pointer hover:bg-gray-50 hover:text-gray-900`}
+        onClick={handleClick}
       >
-        <div className={`flex items-center ${collapsed ? '' : 'gap-6'}`}>
-          <div className='rounded border p-1 border-gray-300'>
-            <div className="relative h-4 w-4 ">
-              <Image
-                src={iconSrc}
-                alt={label}
-                fill
-                className="object-contain"
-              />
+        <div className={`flex items-center ${collapsed ? "" : "gap-6"}`}>
+          <div
+            className={`rounded p-1 border border-gray-300 ${isActive ? "bg-yellow-300 border-yellow-300" : "bg-white-100"
+              }`}
+          >
+            <div className="relative h-4 w-4">
+              <Image src={iconSrc} alt={label} fill className="object-contain" />
             </div>
           </div>
           {!collapsed && <span>{label}</span>}
         </div>
 
         {hasDropdown && !collapsed && (
-          <div className="relative h-4 w-4">
+          <div className="relative h-3 w-3">
             <Image
               src="/assets/chevron-down.svg"
               alt="Expand"
               fill
-              className={`object-contain transition-transform ${isOpen ? 'rotate-180' : ''}`}
+              className={`object-contain transition-transform ${isOpen ? "rotate-180" : ""}`}
             />
           </div>
         )}
@@ -60,8 +64,15 @@ const SidebarItem: React.FC<SidebarItemProps> = ({
 
       {hasDropdown && isOpen && !collapsed && (
         <div className="ml-12 border-l border-gray-200 pl-4 py-2">
-          <div className="text-gray-600 hover:text-gray-900 py-2 cursor-pointer">Subitem 1</div>
-          <div className="text-gray-600 hover:text-gray-900 py-2 cursor-pointer">Subitem 2</div>
+          {subItems.map((subItem, index) => (
+            <div
+              key={index}
+              className="text-gray-600 hover:text-gray-900 py-2 cursor-pointer"
+              onClick={subItem.onClick}
+            >
+              {subItem.label}
+            </div>
+          ))}
         </div>
       )}
     </div>
